@@ -8,34 +8,11 @@ var svg = d3.select('svg')
     .append('g')
     .attr('transform', 'translate(' + marginLeft + ',' + marginTop + ')');
 
-// d3.json("bostonNeighborhoods.geojson", function (data) {
-//
-//   var group = svg.selectAll("g")
-//       .data(data.features)
-//       .enter()
-//       .append("g")
-//
-//   var projection = d3.geoAlbersUsa();
-//   var path = d3.geo.path().projection(projection);
-//
-//   var areas = group.append("path")
-//       .attr("d", path)
-//       .attr("class", "area")
-//       .attr("fill", "steelblue");
-//
+// var areaLookup = d3.map(mapData, function(d){
+//   return d.units
 // });
-// // //set up the projection for the map
-// // var albersProjection = d3.geoAlbersUsa()  //tell it which projection to use
-// //     .scale(10,000)                           //tell it how big the map should be
-// //     .translate([(width/2), (height/2)]);  //set the center of the map to show up in the center of the screen
 // //
-// // //set up the path generator function to draw the map outlines
-// // path = d3.geoPath()
-// //     .projection(albersProjection);        //tell it to use the projection that we just made to convert lat/long to pixels
-// //
-// // var areaLookup = d3.map();
-// //
-// // var colorScale = d3.scaleLinear().range(['white','blue']);
+// var colorScale = d3.scaleLinear().range(['white',"#00a6b4"]);
 // //
 // queue()
 //     .defer(d3.json, "./bostonNeighborhoods.json")
@@ -47,24 +24,44 @@ var svg = d3.select('svg')
 //     });
 //
 // //
-// //     colorScale.domain([0, d3.max(unitsData.map(function(d){return +d.units}))]);
+//     colorScale.domain([0, d3.max(unitsData.map(function(d){return +d.units}))]);
 // //
 
+//
+// var canvas = d3.select("body").append("svg")
+//     .attr("width", 700)
+//     .attr("height", 700)
 
-var canvas = d3.select("body").append("svg")
-    .attr("width", 700)
-    .attr("height", 700)
+// var usChart = dc.geoChoroplethChart("#map");
 
-d3.json("bostonNeighborhoods.json", function (data) {
+// var color = d3.scale.threshold()
+//       .domain([1000, 3000, 5000, 7000, 9000, 11000, 13000])
+//       .range(["#f2f0f7", "#dadaeb", "#bcbddc", "#9e9ac8", "#756bb1", "#54278f", "#eafdff"]);
+//
+// d3.json("bostonNeighborhoods.json", function(error, boston) {
+//             d3.csv("affordableUnits.csv", function(error, units) {
+//                 var rateById = {};
+//
+//                 areaLookup.forEach(function(d) {
+//                     rateById[d.id] = +d.id;
+//                 });
 
-    var group = canvas.selectAll("g")
+// d3.csv("./affordableUnits.csv", function(error,data){
+//   var facts = crossfilter(data);
+// })
+
+d3.json("./bostonNeighborhoods.json", function (data) {
+
+    var group = svg.selectAll("g")
         .data(data.features)
         .enter()
         .append("g")
 
-    var projection = d3.geoAlbers()
-        .scale(700)
-        .translate([(width/2), (height/2)]);
+        var projection = d3.geoAlbers()
+        .scale( 190000 )
+        .rotate( [71.057,0] )
+        .center( [0, 42.313] )
+        .translate( [width/2,height/2] );
 
     path = d3.geoPath()
           .projection(projection);
@@ -72,19 +69,26 @@ d3.json("bostonNeighborhoods.json", function (data) {
     var area = group.append("path")
         .attr("d", path)
         .attr("class", "area")
-        .attr("fill", "black")
+        .attr("stroke", "white")
+        .attr("fill", "#00a6b4")
+
+        // .attr("stroke", "white")
+        // .attr("fill", "#00a6b4")
+        // .colors(d3.scale.quantize().range("#00a6b4", "#35d0dd", "#73dae2", "#91dbe0", "#c6fbff"))
+        // .colorDomain(0,200)
+        // .colorCalculator(function(d){return d ? usChart.color() })
+        // .overlayGeoJson(bostonNeighborhoods.json,"area",function(d){
+        //   return d.properties.NAME;
+        // })
 
 
 });
-
-    svg.selectAll("path")               //make empty selection
-        .data(mapData.features)          //bind to the features array in the map data
-        .enter()
-        .append("path")                 //add the paths to the DOM
-        .attr("d", path)                //actually draw them
-        .attr("class", "feature")
-        .attr('fill',function(d){
-            return colorScale(areaLookup.get(d.properties.NAME));
-        })
-        .attr('stroke','black')
-        .attr('stroke-width',.2);
+    //
+    // svg.selectAll("path")               //make empty selection
+    //     .data(mapData.features)          //bind to the features array in the map data
+    //     .enter()
+    //     .append("path")                 //add the paths to the DOM
+    //     .attr("d", path)                //actually draw them
+    //     .attr("class", "feature")
+    //     .attr('stroke','black')
+    //     .attr('stroke-width',.2);
