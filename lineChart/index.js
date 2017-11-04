@@ -14,6 +14,10 @@ var scaleY = d3.scaleLinear().domain([0,1200]).range([400, 0]);  //remember that
 
 var nestedData = [];
 
+var makeLine = d3.line()
+.x(function(d) {return scaleX(d.age)})
+.y(function(d) {return scaleY(d.total)});
+
 // Add the x Axis
 svg.append("g")
     .attr('transform','translate(0,400)')  //move the x axis from the top of the y axis to the bottom
@@ -59,5 +63,7 @@ d3.csv('./incomeData.csv', function(dataIn){
 
 });
 
-
-
+svg.append ("path")
+  .datum(dataIn)
+  .attr("class" , "line")
+  .attr("d" , makeLine)
