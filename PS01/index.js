@@ -21,6 +21,13 @@ var areaLookup = d3.map();
 console.log(areaLookup);
 var colorScale = d3.scaleLinear().range(['white','#00a6b4']);
 
+var div = d3.select("body")
+		    .append("div")
+    		.attr("class", "tooltip")
+    		.style("opacity", 0);
+        // .style('stroke','#003c50')
+        // .style('stroke-width',2)
+
 // var group = svg.selectAll("g")
 //     .data(data.features)
 //     .enter()
@@ -55,9 +62,23 @@ queue()
             .attr('fill', function(d){
                 return colorScale(areaLookup.get(d.properties.Name));
             })
-            .attr('stroke','white')
-            .attr('stroke-width',1)
+            .attr('stroke','#003c50')
+            .attr('stroke-width',2)
+            .on("mouseover", function(d) {
+    	div.transition()
+      	   .duration(200)
+           .style("opacity", .9);
+           div.text(d.properties.Name)
+           .style("left", (d3.event.pageX) + "px")
+           .style("top", (d3.event.pageY - 28) + "px");
+	})
 
+    // fade out tooltip on mouse out
+    .on("mouseout", function(d) {
+        div.transition()
+           .duration(500)
+           .style("opacity", 0);
+    });
       });
 
 
