@@ -64,22 +64,25 @@ queue()
             })
             .attr('stroke','#003c50')
             .attr('stroke-width',2)
-            .on("mouseover", function(d) {
-    	div.transition()
-      	   .duration(200)
-           .style("opacity", .9);
-           div.text(d.properties.Name)
-           .style("left", (d3.event.pageX) + "px")
-           .style("top", (d3.event.pageY - 28) + "px");
-	})
+              .on("mouseover", function(d) {
 
-    // fade out tooltip on mouse out
-    .on("mouseout", function(d) {
-        div.transition()
-           .duration(500)
-           .style("opacity", 0);
-    });
-      });
+                  	div.transition()
+                    	   .duration(200)
+                         .style("opacity", .9);
+                         div.text(d.properties.Name)
+                         .style("left", (d3.event.pageX) + "px")
+                         .style("top", (d3.event.pageY - 28) + "px");
+          	})
+
+              // fade out tooltip on mouse out
+              .on("mouseout", function(d) {
+                  div.transition()
+                     .duration(500)
+                     .style("opacity", 0);
+              });
+                });
+
+                
 
 
 

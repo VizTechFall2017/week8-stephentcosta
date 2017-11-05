@@ -17,3 +17,20 @@ div.tooltip {
 	border-radius: 2;
 	pointer-events: none;
 }
+
+.header {
+  font-family: 'Open Sans', sans-serif;
+  color: #fff;
+  font-size: 32pt;
+  width:100vw;
+  padding: 20px;
+  text-align: center;
+}
+
+body {
+  background-color: #003c50;
+}
+
+hr {
+  border-color: #00a6b4;
+}
