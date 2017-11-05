@@ -17,9 +17,9 @@ var projection = d3.geoAlbers()
     path = d3.geoPath()
           .projection(projection);
 
-var stateLookup = d3.map();
-
-var colorScale = d3.scaleLinear().range(["white","blue"]);
+var areaLookup = d3.map();
+console.log(areaLookup);
+var colorScale = d3.scaleLinear().range(['white','#00a6b4']);
 
 // var group = svg.selectAll("g")
 //     .data(data.features)
@@ -38,10 +38,13 @@ queue()
     .await(function(err, mapData, unitsData){
 
     unitsData.forEach(function(d){
-        stateLookup.set(d.area, d.units);
+        areaLookup.set(d.area, d.units);
     });
 
+    console.log(unitsData);
+
     colorScale.domain([0, d3.max(unitsData.map(function(d){return +d.units}))]);
+
 
         svg.selectAll("path")               //make empty selection
             .data(mapData.features)          //bind to the features array in the map data
@@ -49,13 +52,16 @@ queue()
             .append("path")                 //add the paths to the DOM
             .attr("d", path)                //actually draw them
             .attr("class", "feature")
-            .attr('fill',function(d){
-                return colorScale(stateLookup.get(d.properties.NAME));
+            .attr('fill', function(d){
+                return colorScale(areaLookup.get(d.properties.Name));
             })
             .attr('stroke','white')
-            .attr('stroke-width',.2);
+            .attr('stroke-width',1)
 
       });
+
+
+
 
     // d3.json("./bostonNeighborhoods.json", function (data) {
 
